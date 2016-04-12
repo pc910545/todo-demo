@@ -1,0 +1,131 @@
+@(implicit messages: Messages)
+
+@import helper._
+
+@main("Todo list") {
+	<script id="todo-template" type="text/x-handlebars-template">
+		<ul class="list-unstyled">
+		{{#each Todos}}
+			<li class="ui-state-default" id="{{_id.$oid}}">
+				<div class="checkbox">
+                    <label {{#if isDone}}class="done"{{/if}} >
+						{{#unless isDone}}
+                        <input type="checkbox" />
+						{{/unless}}
+						{{title}}
+					</label>
+					<button class="remove-item btn btn-default btn-xs pull-right"><span class="glyphicon glyphicon-remove"></span></button>
+                </div>
+			</li>
+		{{/each}}
+		</ul>
+	</script>
+	<script type="text/javascript">
+	var app = function () {
+	 return {
+		init: function () {
+			app.select().then(function(){
+				//bind create 
+				$(".add-todo").on("keypress",function (e) {
+					e.preventDefault;
+					if (e.which == 13) {
+						var title = $(this).val().trim();
+						app.create(title); 
+					}
+				});
+				//bind delete
+				$(".todolist").on("click",".remove-item", function(){
+					app.delete($(this).closest(".ui-state-default").attr("id"));
+				}); 
+				//bind done
+				$(".todolist").on("change",".ui-state-default input[type='checkbox']",function(){
+					if($(this).prop("checked")){
+						app.done($(this).closest(".ui-state-default").attr("id"))
+					}
+				});
+			});
+		},
+		select: function(){
+			return $.ajax({
+                url: "/api/todos",
+				type: "GET",
+				dataType: "json",
+			}).done(function(todos){
+				var source   = $("#todo-template").html();
+				var template = Handlebars.compile(source);
+				var unDone = $.grep(todos, function(todo, index){
+					return todo.isDone == false;
+				});
+				$(".todo-content").html(template({Todos: todos}));
+				$(".count-todos").html(todos.length);
+				$(".count-undone").html(unDone.length);
+				$(".add-todo").val("");
+			});
+		},
+		create: function(text) {
+			return $.ajax({
+                url: "/api/todo",
+				type: "POST",
+				data : JSON.stringify({Title: text}),
+				contentType: "application/json",
+				statusCode: {
+					500: function() {
+						alert("falied");
+					},
+					201: function() {
+						app.select();
+					}
+				}
+			});
+		},
+		done: function(id) {
+			return $.ajax({
+                url: "/api/todos/"+id,
+				type: "PUT",
+				contentType: "application/json",
+				data : JSON.stringify({}),
+				statusCode: {
+					500: function() {
+						alert("falied");
+					},
+					202: function() {
+						app.select();
+					}
+				}
+			});
+		},
+		delete: function(id) {
+			return $.ajax({
+                url: "/api/todos/"+id,
+				type: "DELETE",
+				statusCode: {
+					500: function() {
+						alert("falied");
+					},
+					202: function() {
+						app.select();
+					}
+				}
+			});
+		}
+	 }
+	}();
+	$(document).ready(app.init());
+    </script>
+
+    <div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="todolist">
+             <h1>Todos</h1>
+                <input type="text" class="form-control add-todo" placeholder="Add todo...">
+                <hr>
+                <div class="todo-content"></div>
+                <div class="todo-footer">
+                    <strong><span class="count-undone"></span></strong> / <span class="count-todos"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}

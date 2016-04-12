@@ -1,0 +1,4 @@
+[0m[[0mdebug[0m] [0mCopy resource mappings: [0m
+[0m[[0mdebug[0m] [0m	(C:\Users\judy_chen.HTCTAIPEI\todo-demo\conf\application.conf,C:\Users\judy_chen.HTCTAIPEI\todo-demo\target\scala-2.11\classes\application.conf)[0m
+[0m[[0mdebug[0m] [0m	(C:\Users\judy_chen.HTCTAIPEI\todo-demo\conf\messages,C:\Users\judy_chen.HTCTAIPEI\todo-demo\target\scala-2.11\classes\messages)[0m
+[0m[[0mdebug[0m] [0m	(C:\Users\judy_chen.HTCTAIPEI\todo-demo\conf\routes,C:\Users\judy_chen.HTCTAIPEI\todo-demo\target\scala-2.11\classes\routes)[0m

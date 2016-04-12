@@ -1,0 +1,20 @@
+@(title: String)(content: Html)
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>@title</title>
+		 <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")"/>
+        <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/bootstrap.min.css")"/>
+		<link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/site.css")"/>
+        <script type="text/javascript" src="@routes.Assets.versioned("javascripts/jquery-2.1.1.min.js")" ></script>
+		<script type="text/javascript" src="@routes.Assets.versioned("javascripts/jquery-ui-1.10.3.min.js")" ></script>
+		<script type="text/javascript" src="@routes.Assets.versioned("javascripts/bootstrap.min.js")" ></script>
+		<script type="text/javascript" src="@routes.Assets.versioned("javascripts/handlebars-v4.0.5.js")" ></script>
+		<script type="text/javascript" src="@routes.Assets.versioned("javascripts/handlebars-helper.js")" ></script>
+    </head>
+    <body>
+        @content
+    </body>
+</html>
